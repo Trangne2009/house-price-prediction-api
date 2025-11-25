@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard] # Có thể dùng uvicorn[standard] cho hiệu suất tốt hơn
+pandas 
+numpy 
+scikit-learn
+joblib
+openpyxl
+pydantic
+xgboost
