@@ -62,4 +62,5 @@ Em đã đạt hiệu suất tối ưu bằng cách kết hợp hai mô hình c�
 
 1.  **Hệ thống Giám sát (Monitoring):** Triển khai **Prometheus & Grafana** để theo dõi hiệu suất mô hình và phát hiện **Data Drift** trong môi trường sản xuất.
 2.  **Nâng cấp Ensemble:** Áp dụng kỹ thuật **Stacking** (Stacked Generalization) sử dụng mô hình **Meta-Learner** để đạt được sự kết hợp phi tuyến tính hiệu quả hơn.
+>>>>>>> e55f586f7bbc2f2c031e2382d0d501ece63a2a69
 3.  **Tối ưu Triển khai:** Chuyển sang **Kubernetes (K8s)** hoặc **Google Cloud Run** để hỗ trợ **Tự động mở rộng (Auto-Scaling)** và quản lý container hiệu quả hơn.
