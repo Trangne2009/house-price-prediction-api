@@ -8,7 +8,9 @@ from typing import Optional # Dùng cho các trường có thể tùy chọn
 from sklearn.preprocessing import LabelEncoder
 from sklearn.pipeline import Pipeline # Dùng để tải LR Pipeline
 
-# Định nghĩa cấu trúc dữ liệu đầu vào (12 đặc trưng gốc + Năm hiện tại)
+BASE_TRAINING_YEAR = 2014
+
+# Định nghĩa cấu trúc dữ liệu đầu vào (12 đặc trưng gốc)
 class HouseFeatures(BaseModel):
     # Các feature số học và thứ tự:
     bedrooms: int 
@@ -27,9 +29,6 @@ class HouseFeatures(BaseModel):
     # Feature phân loại đã được mã hóa trong mô hình
      
     city: str
-    
-    # Giá trị cần thiết cho Feature Engineering
-    current_year: int = 2025 # Năm hiện tại dùng để tính tuổi nhà
     
 app = FastAPI(
     title="House Price Prediction",
@@ -65,9 +64,9 @@ def preprocess_input(data: dict, X_train_cols: pd.Index, city_ohe_cols: list) ->
     df = pd.DataFrame([data])
     
     #1. Feature Engineering
-    df['date_year'] = df['current_year']
+    df['date_year'] = BASE_TRAINING_YEAR
     df['date_month'] = 1 # Giả định là tháng 1 cho dữ liệu mới
-    df['age'] = df['current_year'] - df['yr_built']
+    df['age'] = BASE_TRAINING_YEAR - df['yr_built']
     df['is_renovated'] = df['yr_renovated'].apply(lambda x: 1 if x > 0 else 0)
     df['total_sqft'] = df['sqft_living'] + df['sqft_lot']
     
@@ -77,7 +76,7 @@ def preprocess_input(data: dict, X_train_cols: pd.Index, city_ohe_cols: list) ->
     
     #3. Loại bỏ Cột Thừa (Giống như trong pre_processing.py)
     cols_to_drop = [
-        'city', 'current_year', 'statezip', 'street', 'country', 'sqft_lot'
+        'city', 'statezip', 'street', 'country', 'sqft_lot'
     ]
     df = df.drop(columns=cols_to_drop, errors='ignore')
     
