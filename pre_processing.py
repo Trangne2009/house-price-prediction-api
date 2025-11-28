@@ -65,13 +65,12 @@ def handle_continuous_imputation(df, col, threshold=0.04):
 # =================================================================
 
 # --- 0. Phân loại Cột thủ công ---
-CATEGORICAL_COLS = ['waterfront']
-CONTINUOUS_COLS = ['price', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'sqft_above', 'sqft_basement', 'bedrooms', 'view', 'condition']
+CONTINUOUS_COLS = ['price', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 'sqft_above', 'sqft_basement', 'bedrooms', 'view', 'condition', 'waterfront']
 DATE_COL = 'date'
 ID_COL = ['street', 'statezip', 'city', 'country']
 TIME_COLS = ['yr_built', 'yr_renovated']
 # Sửa lỗi logic list lồng nhau
-ALL_COLS = CATEGORICAL_COLS + CONTINUOUS_COLS + [DATE_COL] + ID_COL 
+ALL_COLS = CONTINUOUS_COLS + [DATE_COL] + ID_COL 
 
 # --- Tải dữ liệu ---
 try:
@@ -105,10 +104,6 @@ print(f"Dòng sau khi xóa NaN cho DATE: {len(df)}")
 
 # --- 2. Áp dụng Logic Imputation (Ngưỡng 4%) ---
 print("\n--- 2. Áp dụng Logic Imputation theo Loại Dữ liệu (Ngưỡng 4%) ---")
-
-# Áp dụng cho các cột Rời rạc
-for col in CATEGORICAL_COLS:
-    df = handle_categorical_imputation(df, col) # Cần gán lại df vì có thể bị xóa dòng
 
 # Áp dụng cho các cột Liên tục
 for col in CONTINUOUS_COLS + TIME_COLS:
@@ -179,7 +174,7 @@ city_counts = df['city'].value_counts()
 city_percentages = df['city'].value_counts(normalize=True).mul(100).round(2)
 
 city_distribution = pd.DataFrame({
-    'Count': city_counts,
+    'Count': city_counts,   
     'Percentage': city_percentages.astype(str) + '%'
 })
 
@@ -220,6 +215,5 @@ cleaned_file_name = 'cleaned_data.xlsx'
 df.to_excel(cleaned_file_name, index=False)
 print(f"\nFile đã được lưu vào: {cleaned_file_name}")
 
-print("\n--- KẾT QUẢ CUỐI CÙNG ---")
-df.info() 
-print(f"Số dòng cuối cùng: {len(df)}")
+print(f"\n--- TIỀN XỬ LÝ HOÀN TẤT ---")
+print(f"DataFrame cuối cùng có {df.shape[0]} dòng và {df.shape[1]} cột.")

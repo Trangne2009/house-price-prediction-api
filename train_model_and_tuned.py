@@ -57,6 +57,7 @@ print("-> Đã lưu standard_scaler_final.pkl.")
 
 # --- 2. Huấn luyện Mô hình ---
 models = {
+    "Linear Regression (Baseline)": LinearRegression(),
     "Ridge Regression": Ridge(alpha=10.0),
     "Lasso Regression": Lasso(alpha=0.001, max_iter=10000),
     "Elastic Net Regression": ElasticNet(alpha=0.01, l1_ratio=0.5, max_iter=10000) # Thêm ElasticNet
@@ -72,7 +73,7 @@ for name, model in models.items():
         full_pipeline = Pipeline(steps=[('scaler', scaler_model),
                                  ('regressor', model)])
     else:
-        full_pipeline = model # XGBoost không dùng Scaler
+        full_pipeline = model 
  
     # Huấn luyện
     full_pipeline.fit(X_train, Y_train)
@@ -82,6 +83,17 @@ for name, model in models.items():
     score = rmsle(Y_test, Y_pred)
     results[name] = score
     print(f"-> {name} - RMSLE: {score:.4f}")
+
+    if name == "Linear Regression (Baseline)":
+        # 1. Lưu mô hình Pipeline (final_linear_model.pkl)
+        joblib.dump(full_pipeline, 'final_linear_model.pkl')
+        print(f"-> ĐÃ LƯU: Mô hình Pipeline '{name}' vào file 'final_linear_model.pkl'.")
+        
+        # 2. LƯU DỰ ĐOÁN (Y_pred) CỦA LINEAR REGRESSION
+        # Lưu dưới dạng mảng numpy để dễ dàng tải lại và sử dụng
+        Y_pred_linear = Y_pred
+        joblib.dump(Y_pred_linear, 'Y_pred_linear.pkl')
+        print(f"-> ĐÃ LƯU: Dự đoán Y_pred của LR vào file 'Y_pred_linear.pkl'.")
 
 print("\n--- A. TINH CHỈNH SIÊU THAM SỐ CHO RIDGE ---")
 ridge_pipe = Pipeline(steps=[('scaler', StandardScaler()), ('ridge', Ridge(random_state=42))])
@@ -165,26 +177,10 @@ all_results["XGBoost (Tuned)"] = xgb_rmsle
 print(f"-> XGBoost Best Params: {xgb_grid.best_params_}")
 print(f"-> XGBoost (Tuned) RMSLE trên Test Set: {xgb_rmsle:.4f}")
 
-lr_pipe = Pipeline(steps=[
-    ('scaler', scaler_model),
-    ('regressor', LinearRegression()) 
-])
-lr_pipe.fit(X_train, Y_train)
-
-Y_pred_linear = lr_pipe.predict(X_test)
-linear_rmsle = rmsle(Y_test, Y_pred_linear)
-print(f"-> Linear Regression (Baseline) - RMSLE: {linear_rmsle:.4f}")
-
-lr_model = lr_pipe
-
-models["Linear Regression (Baseline)"] = lr_model
-
 joblib.dump(xgb_best, 'final_xgb_model.pkl')
-joblib.dump(lr_model, 'final_linear_model.pkl')
 
 print("\n--- LƯU KẾT QUẢ DỰ ĐOÁN ĐỂ ENSEMBLING ---")
 # Lưu các mảng dự đoán cần thiết (Y_pred_xgb, Y_pred_linear)
-joblib.dump(Y_pred_linear, 'Y_pred_linear.pkl')
 joblib.dump(Y_pred_xgb, 'Y_pred_xgb.pkl')
 # Lưu biến mục tiêu Y_test
 joblib.dump(Y_test, 'Y_test_ensemble.pkl')
@@ -192,9 +188,10 @@ joblib.dump(Y_test, 'Y_test_ensemble.pkl')
 print("-> Đã lưu các file Y_pred_linear.pkl, Y_pred_xgb.pkl, Y_test_ensemble.pkl.")
 
 # Thêm kết quả baseline để so sánh
-all_results["Linear Regression (Baseline)"] = linear_rmsle
-all_results["Ridge Regression (Untuned)"] = 0.2655
-all_results["Lasso Regression (Untuned)"] = 0.2669
+all_results["Linear Regression (Baseline)"] = 0.2640
+all_results["Ridge Regression (Untuned)"] = 0.2640
+all_results["Lasso Regression (Untuned)"] = 0.2641
+all_results["Elastic Net (Untuned)"] = 0.2654
 
 print("\n=======================================================")
 print("          KẾT QUẢ HUẤN LUYỆN VÀ TINH CHỈNH")

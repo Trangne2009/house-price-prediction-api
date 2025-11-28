@@ -27,7 +27,7 @@ linear_rmsle = rmsle(Y_test, Y_pred_linear)
 xgb_rmsle = rmsle(Y_test, Y_pred_xgb)
 
 print("\n--- KẾT QUẢ MÔ HÌNH KẾT HỢP (XGBoost + Linear Regression) ---")
-# Chúng ta sử dụng Simple Averaging (Trọng số 50/50)
+# Chúng ta sử dụng Averaging 
 Y_pred_ensemble = (Y_pred_xgb * 0.65) + (Y_pred_linear * 0.35) 
 
 # Đánh giá mô hình kết hợp
