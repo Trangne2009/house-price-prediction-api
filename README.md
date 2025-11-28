@@ -8,7 +8,7 @@ Bạn có thể tương tác trực tiếp với mô hình đã triển khai đ�
 
 | Kênh Tương tác | Mục đích | Đường dẫn |
 | :--- | :--- | :--- |
-| **Deployed API (Swagger UI)** | Kiểm thử API trực tiếp (nhập dữ liệu mẫu và nhận kết quả dự đoán). **(Khuyến nghị cho nhà tuyển dụng)** | `https://house-price-prediction-api-7wxj.onrender.com/docs` |
+| **Deployed API (Swagger UI)** | Kiểm thử API trực tiếp (nhập dữ liệu mẫu và nhận kết quả dự đoán). **(Link Render)** | `https://house-price-prediction-api-7wxj.onrender.com/docs` |
 | **Colab Notebook** | Xem toàn bộ mã nguồn, quy trình EDA, Tinh chỉnh mô hình, và các kết quả so sánh cuối cùng. | `https://colab.research.google.com/drive/1yf25-jL6mhG1xvpBr1OaDWWHfyu3BZcd#scrollTo=hjLxbCXAPCKs` |
 
 ## MỤC TIÊU DỰ ÁN
