@@ -16,6 +16,7 @@ class HouseFeatures(BaseModel):
     sqft_living: int 
     sqft_lot: int 
     floors: float
+    waterfront: int
     view: int 
     condition: int 
     sqft_above: int 
@@ -24,7 +25,7 @@ class HouseFeatures(BaseModel):
     yr_renovated: int 
     
     # Feature phân loại đã được mã hóa trong mô hình
-    waterfront: int 
+     
     city: str
     
     # Giá trị cần thiết cho Feature Engineering
